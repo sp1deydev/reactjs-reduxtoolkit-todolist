@@ -4,29 +4,32 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router-dom/cjs/rea
 import TodoList from '../../components/TodoList/index.jsx';
 import { Radio } from 'antd';
 import handleLocalStorage from '../../../../utils/handleLocalStorage.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { todoSlice } from '../../../../redux/todoSlice.js';
 
 ListPage.propTypes = {
     
 };
 
 function ListPage(props) {
-
+    const dispatch = useDispatch();
+    const todoList = useSelector((state => state.todoList));
     const location = useLocation();
     const history = useHistory();
     const match = useRouteMatch();
-    const [todoList, setTodoList] = useState([]);
+    // const [todoList, setTodoList] = useState([]);
     const [filter, setFilter] = useState(() => {
         const urlParams = queryString.parse(location.search);
         return urlParams.status || 'all';
 
     });
 
-    useEffect(() => {
-        let initTodoList = handleLocalStorage.get('todoList');
-        if (initTodoList) {
-            setTodoList(initTodoList);
-        }
-    }, [])
+    // useEffect(() => {
+    //     // let initTodoList = handleLocalStorage.get('todoList');
+    //     // if (initTodoList) {
+    //     //     setTodoList(initTodoList);
+    //     // }
+    // }, [])
 
     useEffect(() => {
         const urlParams = queryString.parse(location.search);
@@ -35,52 +38,53 @@ function ListPage(props) {
 
 
     const handleStatusClick = (id) => {
-        let index = todoList.findIndex(todo => todo.id === id);
-        let newTodoList = [...todoList];
-        newTodoList[index] = {
-            ...newTodoList[index],
-            status: newTodoList[index].status === 'completed' ? 'incompleted' : 'completed',
-        }
-        setTodoList(newTodoList);
-        handleLocalStorage.set('todoList', newTodoList);
+        // let index = todoList.findIndex(todo => todo.id === id);
+        // let newTodoList = [...todoList];
+        // newTodoList[index] = {
+        //     ...newTodoList[index],
+        //     status: newTodoList[index].status === 'completed' ? 'incompleted' : 'completed',
+        // }
+        // setTodoList(newTodoList);
+        // handleLocalStorage.set('todoList', newTodoList);
+        dispatch(todoSlice.actions.changeStatus(id))
     }
     
     const handleUpdate = (id, title) => {
-        let index = todoList.findIndex(todo => todo.id === id);
-        let newTodoList = [...todoList];
-        newTodoList[index] = {
-            ...newTodoList[index],
-            title: title,
-        }
-        setTodoList(newTodoList);
-        handleLocalStorage.set('todoList', newTodoList);
+        // let index = todoList.findIndex(todo => todo.id === id);
+        // let newTodoList = [...todoList];
+        // newTodoList[index] = {
+        //     ...newTodoList[index],
+        //     title: title,
+        // }
+        // setTodoList(newTodoList);
+        // handleLocalStorage.set('todoList', newTodoList);
     }
 
     const handleDelete = (id) => {
-        let index = todoList.findIndex(todo => todo.id === id);
-        let newTodoList = [...todoList];
-        newTodoList.splice(index, 1)
-        setTodoList(newTodoList);
-        handleLocalStorage.set('todoList', newTodoList);
+        // let index = todoList.findIndex(todo => todo.id === id);
+        // let newTodoList = [...todoList];
+        // newTodoList.splice(index, 1)
+        // setTodoList(newTodoList);
+        // handleLocalStorage.set('todoList', newTodoList);
     }
 
     //filter buttons
     const handleFilterClick = (filterStatus) => {
-        const queryParams = { status:  filterStatus};
-        history.push({
-            pathname: match.path,
-            search: queryString.stringify(queryParams),
-        })
+        // const queryParams = { status:  filterStatus};
+        // history.push({
+        //     pathname: match.path,
+        //     search: queryString.stringify(queryParams),
+        // })
     }
 
     //add new task btn
     const handleAdd = (task) => {
-        console.log(task);
-        let newTask ={...task, id: Math.random().toString(36).substring(2, 6)};
-        let newTodoList = [...todoList];
-        newTodoList.push(newTask);
-        setTodoList(newTodoList);
-        handleLocalStorage.set('todoList', newTodoList);
+        // console.log(task);
+        // let newTask ={...task, id: Math.random().toString(36).substring(2, 6)};
+        // let newTodoList = [...todoList];
+        // newTodoList.push(newTask);
+        // setTodoList(newTodoList);
+        // handleLocalStorage.set('todoList', newTodoList);
     }
 
     const renderedTodoList = todoList.filter(todo => filter === "all" || filter === todo.status)
