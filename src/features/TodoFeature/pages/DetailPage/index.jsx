@@ -1,45 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import TodoDetail from '../../components/TodoDetail';
-import handleStorage from '../../../../utils/handleLocalStorage';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
-import handleLocalStorage from '../../../../utils/handleLocalStorage';
+import { todoSlice } from '../../../../redux/todoSlice';
+import TodoDetail from '../../components/TodoDetail';
 
 DetailPage.propTypes = {
     
 };
 
 function DetailPage(props) {
-    const [todoList, setTodoList] = useState([])
-    const [todo, setTodo] = useState({});
+    const dispatch = useDispatch();
     const match = useRouteMatch();
+    const todoList = useSelector((state) => state.todoList)
+    const todoId = match.params.todoId;
+    const index = todoList.findIndex(todo => todo.id === todoId);
 
-    useEffect(() => {
-        let initTodoList = handleStorage.get('todoList');
-        let todoId = match.params.todoId;
-        if(initTodoList) {
-            let index = initTodoList.findIndex(todo => todo.id === todoId);
-            setTodo(initTodoList[index]);
-            setTodoList(initTodoList);
-        }
-    }, [])
-    
     const handleStatusClick = (id) => {
-        let index = todoList.findIndex(todo => todo.id === id);
-        let newTodoList = [...todoList];
-        newTodoList[index] = {
-            ...newTodoList[index],
-            status: newTodoList[index].status === 'completed' ? 'incompleted' : 'completed',
-        }
-        setTodo(newTodoList[index]);
-        setTodoList(newTodoList);
-        handleLocalStorage.set('todoList', newTodoList);
+        dispatch(todoSlice.actions.changeStatus({id}))
     }
 
     return (
         <div>
             <h3>Todo Detail</h3>
             <TodoDetail 
-                todo={todo}
+                todo={todoList[index]}
                 onStatusClick={handleStatusClick}
             />
         </div>

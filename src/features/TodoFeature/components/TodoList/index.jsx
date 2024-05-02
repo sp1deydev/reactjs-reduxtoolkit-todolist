@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Space, Table, Tag } from "antd";
 import React, { useState } from "react";
-import { Input, message, Popconfirm, Button, Modal, Form, Radio } from 'antd';
+import { Input, message, Popconfirm, Button, Modal, Form, Radio, Pagination } from 'antd';
 import { useHistory, useRouteMatch } from "react-router-dom/cjs/react-router-dom.min";
 import './style.css'
 
@@ -194,7 +194,7 @@ function TodoList(props) {
             </Form.Item>
         </Form>
       </Modal>
-      <Table columns={columns} dataSource={props.todoList} />
+      <Table columns={columns} dataSource={props.todoList} pagination={{ defaultPageSize: 6, total: props.todoList.length}}/>
     </>
   )
 }

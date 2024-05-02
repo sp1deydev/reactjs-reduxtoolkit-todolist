@@ -5,7 +5,6 @@ const store = configureStore({
     reducer: {
         todoList: todoSlice.reducer,
     },
-
 })
 
 export default store;
