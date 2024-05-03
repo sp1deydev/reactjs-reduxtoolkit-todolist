@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min.js';
 import { todoSlice } from '../../../../redux/todoSlice.js';
 import TodoList from '../../components/TodoList/index.jsx';
+import { todoListSelector } from '../../../../redux/selectors.js';
 
 ListPage.propTypes = {
     
@@ -12,7 +13,7 @@ ListPage.propTypes = {
 
 function ListPage(props) {
     const dispatch = useDispatch();
-    const todoList = useSelector((state => state.todoList));
+    const todoList = useSelector(todoListSelector);
     const location = useLocation();
     const history = useHistory();
     const match = useRouteMatch();
